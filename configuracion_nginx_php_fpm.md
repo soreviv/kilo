@@ -29,8 +29,8 @@ Para garantizar la seguridad y el correcto funcionamiento, es crucial establecer
     Configura los permisos para que los directorios tengan `rwxr-x---` (750) y los archivos `rw-r-----` (640). Esto permite que tu usuario tenga control total, el grupo `www-data` pueda leer y ejecutar (necesario para PHP-FPM y Nginx), y otros usuarios no tengan acceso.
 
     ```bash
-    sudo find /var/www/your_project_name -type d -exec chmod 750 {} \;
-    sudo find /var/www/your_project_name -type f -exec chmod 640 {} \;
+    sudo find /var/www/otorrinonet.com -type d -exec chmod 750 {} \;
+    sudo find /var/www/otorrinonet.com -type f -exec chmod 640 {} \;
     ```
 
     **Explicación de los permisos:**
@@ -57,8 +57,8 @@ Pega la siguiente configuración, ajustando `your_project_name.com` a tu dominio
 server {
     listen 80;
     listen [::]:80;
-    server_name your_project_name.com www.your_project_name.com;
-    root /var/www/your_project_name/public;
+    server_name otorrinonet.com www.otorrinonet.com;
+    root /var/www/otorrinonet.com/public;
 
     index index.php index.html index.htm;
 
@@ -78,8 +78,8 @@ server {
         deny all;
     }
 
-    error_log /var/log/nginx/your_project_name_error.log;
-    access_log /var/log/nginx/your_project_name_access.log;
+    error_log /var/log/nginx/otorrinonet_error.log;
+    access_log /var/log/nginx/otorrinonet_access.log;
 }
 ```
 
