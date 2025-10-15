@@ -7,7 +7,7 @@
     <meta name="description" content="Sitio web oficial del Dr. Alejandro Viveros Domínguez, especialista en Otorrinolaringología y Cirugía de Cabeza y Cuello en Gustavo A Madero, CDMX.">
     
     <!-- Tailwind CSS -->
-    <link href="/assets/css/styles.css" rel="stylesheet">
+    <link href="/assets/css/output.css" rel="stylesheet">
     
     <!-- FullCalendar CSS (CDN) -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css' rel='stylesheet' />
