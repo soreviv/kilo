@@ -39,8 +39,8 @@ echo "IMPORTANTE: Recuerda configurar tu usuario y base de datos en PostgreSQL."
 echo "Ejemplo:"
 echo "  sudo -u postgres psql"
 echo "  CREATE DATABASE otorrinonet_db;"
-echo "  CREATE USER otorrinonet_user WITH PASSWORD 'tu_contraseña_segura';"
-echo "  GRANT ALL PRIVILEGES ON DATABASE otorrinonet_db TO otorrinonet_user;"
+echo "  CREATE USER drviverosorl WITH PASSWORD 'tu_contraseña_segura';"
+echo "  GRANT ALL PRIVILEGES ON DATABASE otorrinonet_db TO drviverosorl;"
 echo "  \q"
 
 # 4. Instalar PHP y extensiones
@@ -89,6 +89,6 @@ echo "3. Crea el archivo de configuración de Nginx para tu sitio."
 echo "4. Crea tu base de datos y usuario en PostgreSQL."
 echo "5. Copia el archivo .env.example a .env y rellena las variables de entorno."
 echo "6. Ejecuta 'composer install' dentro del directorio de tu proyecto."
-echo "7. Importa el esquema de la base de datos: psql -U otorrinonet_user -d otorrinonet_db < database_schema.sql"
+echo "7. Importa el esquema de la base de datos: psql -U drviverosorl -d otorrinonet_db < database_schema.sql"
 
 exit 0

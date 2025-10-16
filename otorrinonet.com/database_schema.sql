@@ -1,4 +1,5 @@
 
+
 -- ============================================
 -- Base de Datos: OtorrinoNet
 -- Dr. Alejandro Viveros Domínguez
@@ -9,7 +10,7 @@
 -- Crear la base de datos (ejecutar como superusuario)
 -- CREATE DATABASE otorrinonet_db
 --     WITH 
---     OWNER = otorrinonet_user
+--     OWNER = drviverosorl
 --     ENCODING = 'UTF8'
 --     LC_COLLATE = 'es_MX.UTF-8'
 --     LC_CTYPE = 'es_MX.UTF-8'
@@ -299,12 +300,12 @@ ORDER BY cm.fecha_envio DESC;
 
 -- Función para actualizar timestamp de actualización
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $
+RETURNS TRIGGER AS $$
 BEGIN
     NEW.fecha_actualizacion = CURRENT_TIMESTAMP;
     RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Triggers para actualizar automáticamente fecha_actualizacion
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
@@ -330,7 +331,7 @@ CREATE OR REPLACE FUNCTION check_appointment_availability(
     p_fecha DATE,
     p_hora TIME
 )
-RETURNS BOOLEAN AS $
+RETURNS BOOLEAN AS $$
 DECLARE
     v_count INTEGER;
     v_dia_semana INTEGER;
@@ -365,11 +366,11 @@ BEGIN
     
     RETURN v_schedule_exists;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Función para obtener horarios disponibles de un día
 CREATE OR REPLACE FUNCTION get_available_times(p_fecha DATE)
-RETURNS TABLE (hora TIME) AS $
+RETURNS TABLE (hora TIME) AS $$
 DECLARE
     v_dia_semana INTEGER;
     v_hora_inicio TIME;
@@ -398,7 +399,7 @@ BEGIN
         END LOOP;
     END LOOP;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- ============================================
 -- PERMISOS Y SEGURIDAD
@@ -410,9 +411,9 @@ REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC;
 REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC;
 
 -- Otorgar permisos al usuario de la aplicación
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO otorrinonet_user;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO otorrinonet_user;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO otorrinonet_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO drviverosorl;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO drviverosorl;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO drviverosorl;
 
 -- ============================================
 -- DATOS DE PRUEBA (Opcional - Comentar en producción)
@@ -444,5 +445,4 @@ COMMENT ON TABLE audit_log IS 'Registro de auditoría del sistema';
 -- Verificar la creación de tablas
 SELECT table_name 
 FROM information_schema.tables 
-WHERE table_schema = 'public' 
-ORDER BY table_name;
+WHERE table_schema = 'public';
