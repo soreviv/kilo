@@ -20,9 +20,9 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">Enlaces</h3>
                     <ul class="space-y-2">
-                        <li><a href="/aviso-privacidad.php" class="hover:text-blue-300">Aviso de Privacidad</a></li>
-                        <li><a href="/politica-cookies.php" class="hover:text-blue-300">Política de Cookies</a></li>
-                        <li><a href="/terminos-condiciones.php" class="hover:text-blue-300">Términos y Condiciones</a></li>
+                        <li><a href="/aviso-privacidad" class="hover:text-blue-300">Aviso de Privacidad</a></li>
+                        <li><a href="/politica-cookies" class="hover:text-blue-300">Política de Cookies</a></li>
+                        <li><a href="/terminos-condiciones" class="hover:text-blue-300">Términos y Condiciones</a></li>
                     </ul>
                 </div>
             </div>
@@ -38,8 +38,7 @@
     <!-- Cookie Banner -->
     <?php include 'cookie_banner.php'; ?>
     
-    <!-- JavaScript -->
-    <script src="/assets/js/main.js"></script>
+    <!-- JavaScript -->    
     <script src="/assets/js/cookie-banner.js"></script>
 </body>
 </html>

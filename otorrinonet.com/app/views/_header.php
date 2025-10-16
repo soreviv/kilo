@@ -28,10 +28,10 @@
             </div>
             <nav>
                 <ul class="flex space-x-4">
-                    <li><a href="/" class="text-blue-600 hover:text-blue-800">Inicio</a></li>
-                    <li><a href="/servicios.php" class="text-blue-600 hover:text-blue-800">Servicios</a></li>
-                    <li><a href="/agendar-cita.php" class="text-blue-600 hover:text-blue-800">Agendar Cita</a></li>
-                    <li><a href="/contacto.php" class="text-blue-600 hover:text-blue-800">Contacto</a></li>
+                    <li><a href="/" class="text-blue-600 hover:text-blue-800 font-medium">Inicio</a></li>
+                    <li><a href="/servicios" class="text-blue-600 hover:text-blue-800 font-medium">Servicios</a></li>
+                    <li><a href="/agendar-cita" class="text-blue-600 hover:text-blue-800 font-medium">Agendar Cita</a></li>
+                    <li><a href="/contacto" class="text-blue-600 hover:text-blue-800 font-medium">Contacto</a></li>
                 </ul>
             </nav>
         </div>

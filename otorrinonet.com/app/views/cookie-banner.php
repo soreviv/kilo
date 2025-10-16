@@ -6,8 +6,8 @@
             <p class="cookie-banner-description">
                 Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. 
                 Al continuar navegando, aceptas nuestra 
-                <a href="/politica-cookies.php" class="cookie-link">Política de Cookies</a> y 
-                <a href="/aviso-privacidad.php" class="cookie-link">Aviso de Privacidad</a>.
+                <a href="/politica-cookies" class="cookie-link">Política de Cookies</a> y 
+                <a href="/aviso-privacidad" class="cookie-link">Aviso de Privacidad</a>.
             </p>
         </div>
         <div class="cookie-banner-buttons">
