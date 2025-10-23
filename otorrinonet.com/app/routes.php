@@ -18,8 +18,6 @@ $router->get('/aviso-privacidad', 'LegalController@privacyPolicy');
 $router->get('/politica-cookies', 'LegalController@cookiePolicy');
 $router->get('/terminos-condiciones', 'LegalController@termsAndConditions');
 
-// Otras páginas (se migraran a controladores en los siguientes pasos).
-$router->get('/contacto', 'contacto.php');
-
-// Rutas POST para el manejo de formularios (se migraran a controladores).
-$router->post('/contacto', 'contacto.php');
+// Rutas para el formulario de contacto.
+$router->get('/contacto', 'ContactController@create');
+$router->post('/contacto', 'ContactController@store');
