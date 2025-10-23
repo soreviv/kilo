@@ -21,3 +21,9 @@ $router->get('/terminos-condiciones', 'LegalController@termsAndConditions');
 // Rutas para el formulario de contacto.
 $router->get('/contacto', 'ContactController@create');
 $router->post('/contacto', 'ContactController@store');
+
+// --- Rutas del Panel de Administración ---
+$router->get('/admin/login', 'AuthController@showLoginForm');
+$router->post('/admin/login', 'AuthController@login');
+$router->get('/admin/logout', 'AuthController@logout');
+$router->get('/admin/dashboard', 'AdminController@dashboard');
