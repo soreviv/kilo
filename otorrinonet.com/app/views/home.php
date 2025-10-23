@@ -1,13 +1,14 @@
 <?php
 // Incluir el header
-include '_header.php';
+require '_header.php';
 ?>
 
 <!-- Hero Section -->
 <section class="bg-blue-600 text-white py-20">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-4">Bienvenido al Consultorio del Dr. Alejandro Viveros</h2>
-        <p class="text-xl mb-8">Especialista en Otorrinolaringología y Cirugía de Cabeza y Cuello</p>
+        <!-- Título y mensaje de bienvenida ahora vienen del controlador -->
+        <h2 class="text-4xl font-bold mb-4"><?= htmlspecialchars($pageTitle ?? 'Bienvenido a OtorrinoNet') ?></h2>
+        <p class="text-xl mb-8"><?= htmlspecialchars($welcomeMessage ?? 'Especialista en Otorrinolaringología') ?></p>
         <a href="/agendar-cita" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300">Agendar Cita</a>
     </div>
 </section>
@@ -19,7 +20,8 @@ include '_header.php';
         <div class="flex flex-col md:flex-row items-center">
             <!-- Foto del doctor (placeholder) -->
             <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center">
-                <img src="/assets/images/doctor-placeholder.jpg" alt="Dr. Alejandro Viveros" class="rounded-full w-64 h-64 object-cover border-4 border-blue-200">
+                <!-- Ruta de imagen corregida -->
+                <img src="assets/images/doctor-placeholder.jpg" alt="Dr. Alejandro Viveros" class="rounded-full w-64 h-64 object-cover border-4 border-blue-200">
             </div>
             <div class="md:w-2/3 md:pl-8">
                 <h3 class="text-2xl font-bold mb-4">Dr. Alejandro Viveros Domínguez</h3>
@@ -82,5 +84,5 @@ include '_header.php';
 
 <?php
 // Incluir el footer
-include '_footer.php';
+require '_footer.php';
 ?>
