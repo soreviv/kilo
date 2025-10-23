@@ -81,4 +81,39 @@ class AppointmentModel {
             return false;
         }
     }
+
+    /**
+     * Obtiene todas las citas, ordenadas por fecha y hora.
+     *
+     * @return array
+     */
+    public function getAllAppointments() {
+        $query = "SELECT * FROM appointments ORDER BY fecha_cita DESC, hora_cita ASC";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener todas las citas: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Actualiza el estado de una cita.
+     *
+     * @param int $id
+     * @param string $status
+     * @return bool
+     */
+    public function updateStatus(int $id, string $status): bool {
+        $query = "UPDATE appointments SET status = :status WHERE id = :id";
+        try {
+            $statement = $this->db->prepare($query);
+            return $statement->execute([':status' => $status, ':id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Error al actualizar el estado de la cita: " . $e->getMessage());
+            return false;
+        }
+    }
 }
