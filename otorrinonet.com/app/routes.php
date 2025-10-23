@@ -6,8 +6,10 @@
 // Ruta principal ahora gestionada por HomeController.
 $router->get('/', 'HomeController@index');
 
+// Página de servicios ahora gestionada por ServicesController.
+$router->get('/servicios', 'ServicesController@index');
+
 // Otras páginas (se migraran a controladores en los siguientes pasos).
-$router->get('/servicios', 'servicios.php');
 $router->get('/agendar-cita', 'agendar-cita.php');
 $router->get('/contacto', 'contacto.php');
 $router->get('/aviso-privacidad', 'aviso-privacidad.php');
