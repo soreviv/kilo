@@ -1,12 +1,12 @@
 <?php
 
-// Here we define all the application routes.
-// The router instance is passed from index.php.
+// El router ahora puede gestionar controladores.
+// La sintaxis es 'ControladorController@metodo'.
 
-// Home Page
-$router->get('/', 'home.php');
+// Ruta principal ahora gestionada por HomeController.
+$router->get('/', 'HomeController@index');
 
-// Other pages (we will create these views in the next steps)
+// Otras páginas (se migraran a controladores en los siguientes pasos).
 $router->get('/servicios', 'servicios.php');
 $router->get('/agendar-cita', 'agendar-cita.php');
 $router->get('/contacto', 'contacto.php');
@@ -14,6 +14,6 @@ $router->get('/aviso-privacidad', 'aviso-privacidad.php');
 $router->get('/politica-cookies', 'politica-cookies.php');
 $router->get('/terminos-condiciones', 'terminos-condiciones.php');
 
-// Rutas POST para el manejo de formularios
+// Rutas POST para el manejo de formularios (se migraran a controladores).
 $router->post('/agendar-cita', 'agendar-cita.php');
 $router->post('/contacto', 'contacto.php');

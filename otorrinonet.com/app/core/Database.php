@@ -26,8 +26,9 @@ class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
         } catch (PDOException $e) {
-            // En un entorno de producción, considera registrar el error en un log en lugar de mostrarlo.
-            die("Error de conexión a la base de datos: " . $e->getMessage());
+            // En lugar de detener la aplicación, lanzamos la excepción
+            // para que pueda ser manejada por un gestor de errores global.
+            throw new PDOException("Error de conexión a la base de datos: " . $e->getMessage(), (int)$e->getCode());
         }
     }
 
