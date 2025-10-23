@@ -78,4 +78,21 @@ class ContactMessageModel {
             return false;
         }
     }
+
+    /**
+     * Obtiene el número de mensajes no leídos.
+     *
+     * @return int
+     */
+    public function getUnreadMessagesCount() {
+        $query = "SELECT COUNT(*) FROM contact_messages WHERE status = 'nuevo'";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error al contar los mensajes no leídos: " . $e->getMessage());
+            return 0;
+        }
+    }
 }

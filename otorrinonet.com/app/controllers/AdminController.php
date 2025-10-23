@@ -19,11 +19,16 @@ class AdminController extends BaseController {
      * Muestra el dashboard principal del panel de administración.
      */
     public function dashboard() {
+        $appointmentModel = new \App\Models\AppointmentModel();
+        $contactMessageModel = new \App\Models\ContactMessageModel();
+
         $data = [
-            'pageTitle' => 'Dashboard - Administración'
+            'pageTitle' => 'Dashboard - Administración',
+            'appointmentsToday' => $appointmentModel->getAppointmentsForToday(),
+            'pendingAppointmentsCount' => $appointmentModel->getPendingAppointmentsCount(),
+            'unreadMessagesCount' => $contactMessageModel->getUnreadMessagesCount(),
         ];
 
-        // Usaremos una vista específica para el dashboard.
         echo $this->renderView('admin/dashboard', $data);
     }
 

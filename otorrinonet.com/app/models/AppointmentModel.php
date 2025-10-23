@@ -116,4 +116,38 @@ class AppointmentModel {
             return false;
         }
     }
+
+    /**
+     * Obtiene las citas para el día actual.
+     *
+     * @return array
+     */
+    public function getAppointmentsForToday() {
+        $query = "SELECT * FROM appointments WHERE fecha_cita = CURRENT_DATE ORDER BY hora_cita ASC";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener las citas de hoy: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene el número de citas pendientes.
+     *
+     * @return int
+     */
+    public function getPendingAppointmentsCount() {
+        $query = "SELECT COUNT(*) FROM appointments WHERE status = 'pendiente'";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error al contar las citas pendientes: " . $e->getMessage());
+            return 0;
+        }
+    }
 }
