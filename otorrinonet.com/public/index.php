@@ -1,5 +1,8 @@
 <?php
 
+// Iniciar la sesión para poder usar variables $_SESSION.
+session_start();
+
 // Cargar el autoloader de Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -7,28 +10,28 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-require_once __DIR__ . '/../app/core/Database.php';
-require_once __DIR__ . '/../app/core/Router.php';
+// Usar las clases con su namespace.
+use App\Core\Router;
 
-// Create a new Router instance
-$router = new Router();
+// No es necesario requerir los archivos directamente gracias al autoloader.
+// require_once __DIR__ . '/../app/core/Database.php';
+// require_once __DIR__ . '/../app/core/Router.php';
 
-// --- Define Routes ---
-// Load the routes from the routes file
-require_once __DIR__ . '/../app/routes.php';
-
+// Cargar las rutas y obtener el router.
+$router = Router::load(__DIR__ . '/../app/routes.php');
 
 // --- Dispatch the request ---
-// Get the current URI and request method
+// Obtener la URI y el método de la petición.
 $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Direct the request to the correct view
+// Dirigir la petición al controlador correspondiente.
 try {
-    $viewToInclude = $router->direct($uri, $method);
-    require $viewToInclude;
+    // El método direct ahora se encarga de llamar al controlador y renderizar la vista.
+    $router->direct($uri, $method);
 } catch (Exception $e) {
-    // Log the error or show a generic error message
-    // For now, we'll just echo the exception message for debugging
+    // En un entorno de producción, aquí se mostraría una página de error amigable.
+    // Por ahora, mostramos el mensaje de la excepción para depuración.
+    http_response_code(500);
     echo 'Error: ' . $e->getMessage();
 }
