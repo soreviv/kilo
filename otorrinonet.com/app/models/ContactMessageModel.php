@@ -43,4 +43,39 @@ class ContactMessageModel {
             return false;
         }
     }
+
+    /**
+     * Obtiene todos los mensajes de contacto, ordenados por fecha de envío.
+     *
+     * @return array
+     */
+    public function getAllMessages() {
+        $query = "SELECT * FROM contact_messages ORDER BY fecha_envio DESC";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener todos los mensajes: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Actualiza el estado de un mensaje.
+     *
+     * @param int $id
+     * @param string $status
+     * @return bool
+     */
+    public function updateStatus(int $id, string $status): bool {
+        $query = "UPDATE contact_messages SET status = :status WHERE id = :id";
+        try {
+            $statement = $this->db->prepare($query);
+            return $statement->execute([':status' => $status, ':id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Error al actualizar el estado del mensaje: " . $e->getMessage());
+            return false;
+        }
+    }
 }

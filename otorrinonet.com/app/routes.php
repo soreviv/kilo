@@ -27,3 +27,7 @@ $router->get('/admin/login', 'AuthController@showLoginForm');
 $router->post('/admin/login', 'AuthController@login');
 $router->get('/admin/logout', 'AuthController@logout');
 $router->get('/admin/dashboard', 'AdminController@dashboard');
+$router->get('/admin/appointments', 'AdminController@listAppointments');
+$router->post('/admin/appointments/status', 'AdminController@updateAppointmentStatus');
+$router->get('/admin/messages', 'AdminController@listMessages');
+$router->post('/admin/messages/status', 'AdminController@updateMessageStatus');
