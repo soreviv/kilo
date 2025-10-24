@@ -31,3 +31,6 @@ $router->get('/admin/appointments', 'AdminController@listAppointments');
 $router->post('/admin/appointments/status', 'AdminController@updateAppointmentStatus');
 $router->get('/admin/messages', 'AdminController@listMessages');
 $router->post('/admin/messages/status', 'AdminController@updateMessageStatus');
+
+// --- Rutas de la API ---
+$router->get('/api/available-times', 'ApiController@getAvailableTimes');
