@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AppointmentModel;
+use App\Controllers\BaseController;
 
 class ApiController extends BaseController {
     /**
@@ -14,21 +15,25 @@ class ApiController extends BaseController {
      * the Content-Type header set to application/json.
      */
     public function getAvailableTimes() {
-        // Obtener la fecha de la query string (ej. /api/available-times?date=2025-10-23)
+        header('Content-Type: application/json');
         $date = $_GET['date'] ?? null;
 
         if (!$this->isValidDate($date)) {
             http_response_code(400); // Bad Request
-            echo json_encode(['error' => 'Fecha no válida o no proporcionada.']);
+            echo json_encode(['date' => $date, 'error' => 'Fecha no válida o no proporcionada.']);
             return;
         }
 
-        $appointmentModel = new AppointmentModel();
-        $availableSlots = $appointmentModel->getAvailableSlotsForDate($date);
+        try {
+            $appointmentModel = new AppointmentModel();
+            $availableSlots = $appointmentModel->getAvailableSlotsForDate($date);
 
-        // Devolver los datos como JSON.
-        header('Content-Type: application/json');
-        echo json_encode($availableSlots);
+            echo json_encode(['date' => $date, 'slots' => $availableSlots]);
+        } catch (\Exception $e) {
+            error_log("Error en ApiController::getAvailableTimes: " . $e->getMessage());
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['date' => $date, 'error' => 'Ocurrió un error al procesar la solicitud.']);
+        }
     }
 
     /**

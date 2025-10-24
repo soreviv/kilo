@@ -121,15 +121,22 @@ class AppointmentModel {
      * Retrieve all appointments scheduled for the current date, ordered by time.
      *
      * @return array An array of associative arrays representing today's appointments; empty array if there are none or an error occurs.
+     * Obtiene las citas para una fecha específica.
+     *
+     * @param string $date La fecha en formato Y-m-d.
+     * @return array
      */
-    public function getAppointmentsForToday() {
-        $query = "SELECT * FROM appointments WHERE fecha_cita = CURRENT_DATE ORDER BY hora_cita ASC";
+    public function getAppointmentsForDate(string $date) {
+        $query = "SELECT hora_cita, nombre, tipo_consulta, status
+                  FROM appointments
+                  WHERE fecha_cita = :date
+                  ORDER BY hora_cita ASC";
         try {
             $statement = $this->db->prepare($query);
-            $statement->execute();
+            $statement->execute([':date' => $date]);
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener las citas de hoy: " . $e->getMessage());
+            error_log("Error al obtener las citas para la fecha {$date}: " . $e->getMessage());
             return [];
         }
     }

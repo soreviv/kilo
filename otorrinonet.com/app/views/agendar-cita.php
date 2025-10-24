@@ -112,15 +112,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Error al cargar los horarios.');
             }
-            const timeSlots = await response.json();
+            const data = await response.json();
 
             timeSlotsDiv.innerHTML = '';
-            if (timeSlots.length === 0) {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            if (data.slots.length === 0) {
                 timeSlotsDiv.innerHTML = '<p class="text-red-500">No hay horarios disponibles para este día.</p>';
                 return;
             }
 
-            timeSlots.forEach(time => {
+            data.slots.forEach(time => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'px-4 py-3 border-2 border-blue-300 text-blue-700 rounded-lg hover:bg-blue-600 hover:text-white transition duration-200';
@@ -130,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } catch (error) {
             console.error(error);
-            timeSlotsDiv.innerHTML = '<p class="text-red-500">No se pudieron cargar los horarios. Inténtalo de nuevo.</p>';
+            timeSlotsDiv.innerHTML = `<p class="text-red-500">${error.message}</p>`;
         }
     }
 
