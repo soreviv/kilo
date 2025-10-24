@@ -22,9 +22,11 @@ class AdminController extends BaseController {
         $appointmentModel = new \App\Models\AppointmentModel();
         $contactMessageModel = new \App\Models\ContactMessageModel();
 
+        $today = date('Y-m-d');
+
         $data = [
             'pageTitle' => 'Dashboard - Administración',
-            'appointmentsToday' => $appointmentModel->getAppointmentsForToday(),
+            'appointmentsToday' => $appointmentModel->getAppointmentsForDate($today),
             'pendingAppointmentsCount' => $appointmentModel->getPendingAppointmentsCount(),
             'unreadMessagesCount' => $contactMessageModel->getUnreadMessagesCount(),
         ];
