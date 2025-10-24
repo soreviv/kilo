@@ -7,15 +7,17 @@ use App\Controllers\BaseController;
 
 class ApiController extends BaseController {
     /**
-     * Outputs available time slots for the date specified by the "date" query parameter as JSON.
-     *
-     * Reads the "date" query parameter (expected format YYYY-MM-DD). If the date is missing or invalid,
-     * sets HTTP status 400 and outputs a JSON error object: {"error":"Fecha no válida o no proporcionada."}.
-     * If valid, retrieves available slots from the AppointmentModel and outputs them as JSON with
-     * the Content-Type header set to application/json.
+     * Devuelve los horarios disponibles para una fecha dada en formato JSON.
      */
     public function getAvailableTimes() {
         header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            http_response_code(405); // Method Not Allowed
+            echo json_encode(['error' => 'Método no permitido.']);
+            return;
+        }
+
         $date = $_GET['date'] ?? null;
 
         if (!$this->isValidDate($date)) {
@@ -37,14 +39,14 @@ class ApiController extends BaseController {
     }
 
     /**
-     * Determines whether a string represents a valid date in YYYY-MM-DD format.
+     * Valida si una cadena es una fecha válida en formato Y-m-d.
      *
-     * @param string|null $date The date string to validate (expected format: "Y-m-d").
-     * @return bool `true` if $date is a valid calendar date formatted as "Y-m-d", `false` otherwise.
+     * @param string|null $date
+     * @return bool
      */
     private function isValidDate($date) {
         if (!$date) return false;
-        $d = \DateTime::createFromFormat('Y-m-d', $date);
-        return $d && $d->format('Y-m-d') === $date;
+        $dateObj = \DateTimeImmutable::createFromFormat('Y-m-d', $date);
+        return $dateObj && $dateObj->format('Y-m-d') === $date;
     }
 }

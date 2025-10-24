@@ -55,8 +55,84 @@ require '_header.php';
                         <input type="hidden" name="fecha_cita" id="fecha_cita" value="<?= htmlspecialchars($old_data['fecha_cita'] ?? '') ?>">
                         <input type="hidden" name="hora_cita" id="hora_cita" value="<?= htmlspecialchars($old_data['hora_cita'] ?? '') ?>">
                         
-                        <!-- (Form fields remain the same) -->
+                        <!-- Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-gray-700 font-medium mb-2">Nombre Completo <span class="text-red-600">*</span></label>
+                            <input type="text" id="nombre" name="nombre" required value="<?= htmlspecialchars($old_data['nombre'] ?? '') ?>"
+                                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 <?= isset($errors['nombre']) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500' ?>"
+                                   placeholder="Tu nombre completo">
+                            <?php if (isset($errors['nombre'])): ?>
+                                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['nombre']) ?></p>
+                            <?php endif; ?>
+                        </div>
 
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email <span class="text-red-600">*</span></label>
+                            <input type="email" id="email" name="email" required value="<?= htmlspecialchars($old_data['email'] ?? '') ?>"
+                                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 <?= isset($errors['email']) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500' ?>"
+                                   placeholder="correo@ejemplo.com">
+                            <?php if (isset($errors['email'])): ?>
+                                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['email']) ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div>
+                            <label for="telefono" class="block text-gray-700 font-medium mb-2">Teléfono <span class="text-red-600">*</span></label>
+                            <input type="tel" id="telefono" name="telefono" required value="<?= htmlspecialchars($old_data['telefono'] ?? '') ?>"
+                                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 <?= isset($errors['telefono']) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500' ?>"
+                                   placeholder="55 1234-5678">
+                            <?php if (isset($errors['telefono'])): ?>
+                                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['telefono']) ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Tipo de Consulta -->
+                        <div>
+                            <label for="tipo_consulta" class="block text-gray-700 font-medium mb-2">Tipo de Consulta <span class="text-red-600">*</span></label>
+                            <select id="tipo_consulta" name="tipo_consulta" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 <?= isset($errors['tipo_consulta']) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500' ?>">
+                                <option value="">Seleccione...</option>
+                                <option value="primera_vez" <?= ($old_data['tipo_consulta'] ?? '') === 'primera_vez' ? 'selected' : '' ?>>Primera Vez</option>
+                                <option value="seguimiento" <?= ($old_data['tipo_consulta'] ?? '') === 'seguimiento' ? 'selected' : '' ?>>Seguimiento</option>
+                                <option value="urgencia" <?= ($old_data['tipo_consulta'] ?? '') === 'urgencia' ? 'selected' : '' ?>>Urgencia</option>
+                                <option value="valoracion_cirugia" <?= ($old_data['tipo_consulta'] ?? '') === 'valoracion_cirugia' ? 'selected' : '' ?>>Valoración para Cirugía</option>
+                            </select>
+                            <?php if (isset($errors['tipo_consulta'])): ?>
+                                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['tipo_consulta']) ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Motivo -->
+                        <div>
+                            <label for="motivo" class="block text-gray-700 font-medium mb-2">Motivo de Consulta</label>
+                            <textarea id="motivo" name="motivo" rows="4"
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      placeholder="Describe brevemente tu motivo de consulta..."><?= htmlspecialchars($old_data['motivo'] ?? '') ?></textarea>
+                        </div>
+
+                        <!-- Resumen de Cita -->
+                        <div id="appointment-summary" class="hidden bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-blue-800 mb-2">Resumen de tu Cita</h3>
+                            <div class="text-sm text-blue-700 space-y-1">
+                                <p><strong>Fecha:</strong> <span id="summary-date"></span></p>
+                                <p><strong>Hora:</strong> <span id="summary-time"></span></p>
+                            </div>
+                        </div>
+
+                        <!-- hCaptcha -->
+                        <div class="h-captcha" data-sitekey="<?= htmlspecialchars($_ENV['HCAPTCHA_SITE_KEY'] ?? '') ?>"></div>
+                        <?php if (isset($errors['hcaptcha'])): ?>
+                            <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['hcaptcha']) ?></p>
+                        <?php endif; ?>
+
+                        <!-- Botón Enviar -->
+                        <div>
+                            <button type="submit" id="submit-btn" disabled class="w-full bg-gray-400 text-white py-3 rounded-lg font-bold cursor-not-allowed transition duration-300">
+                                Selecciona Fecha y Hora
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -64,7 +140,6 @@ require '_header.php';
     </div>
 </section>
 
-<!-- Mantenemos el mismo JavaScript para el calendario -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -98,10 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     calendar.render();
 
-    async function fetchAvailableTimes(dateStr) {
+    async function fetchAvailableTimes(dateStr, preselectedTime = null) {
         selectedDateSpan.textContent = formatDate(dateStr);
         fechaCitaInput.value = dateStr;
-        horaCitaInput.value = '';
+        horaCitaInput.value = preselectedTime || '';
         updateSubmitButton();
 
         availableTimesDiv.classList.remove('hidden');
@@ -129,8 +204,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.type = 'button';
                 btn.className = 'px-4 py-3 border-2 border-blue-300 text-blue-700 rounded-lg hover:bg-blue-600 hover:text-white transition duration-200';
                 btn.textContent = time;
-                btn.onclick = () => selectTime(time, dateStr);
+                btn.onclick = () => selectTime(btn, time, dateStr);
                 timeSlotsDiv.appendChild(btn);
+
+                if (preselectedTime === time) {
+                    selectTime(btn, time, dateStr);
+                }
             });
         } catch (error) {
             console.error(error);
@@ -138,11 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function selectTime(time, date) {
+    function selectTime(button, time, date) {
         document.querySelectorAll('#time-slots button').forEach(btn => {
             btn.classList.remove('bg-blue-600', 'text-white');
         });
-        event.target.classList.add('bg-blue-600', 'text-white');
+        button.classList.add('bg-blue-600', 'text-white');
 
         horaCitaInput.value = time;
         summaryDate.textContent = formatDate(date);
@@ -169,20 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Si hay una fecha/hora antigua, pre-selecciónala
     if (fechaCitaInput.value) {
-        fetchAvailableTimes(fechaCitaInput.value);
-
-        if (horaCitaInput.value) {
-            setTimeout(() => {
-                const buttons = document.querySelectorAll('#time-slots button');
-                buttons.forEach(btn => {
-                    if (btn.textContent === horaCitaInput.value) {
-                        btn.click();
-                    }
-                });
-            }, 500); // Pequeño retraso para dar tiempo a la API a responder
-        }
+        fetchAvailableTimes(fechaCitaInput.value, horaCitaInput.value);
     }
 });
 </script>

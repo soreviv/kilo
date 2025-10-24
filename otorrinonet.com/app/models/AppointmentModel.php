@@ -100,11 +100,11 @@ class AppointmentModel {
     }
 
     /**
-     * Update the status of an appointment identified by its ID.
+     * Actualiza el estado de una cita.
      *
-     * @param int $id The appointment ID to update.
-     * @param string $status The new status to assign to the appointment.
-     * @return bool `true` if the update succeeded, `false` otherwise.
+     * @param int $id
+     * @param string $status
+     * @return bool
      */
     public function updateStatus(int $id, string $status): bool {
         $query = "UPDATE appointments SET status = :status WHERE id = :id";
@@ -118,9 +118,6 @@ class AppointmentModel {
     }
 
     /**
-     * Retrieve all appointments scheduled for the current date, ordered by time.
-     *
-     * @return array An array of associative arrays representing today's appointments; empty array if there are none or an error occurs.
      * Obtiene las citas para una fecha específica.
      *
      * @param string $date La fecha en formato Y-m-d.
@@ -142,16 +139,17 @@ class AppointmentModel {
     }
 
     /**
-     * Retrieve the count of appointments whose status is 'pendiente'.
+     * Obtiene el número de citas pendientes.
      *
-     * @return int The number of appointments with status 'pendiente'; returns 0 if a database error occurs.
+     * @return int
      */
     public function getPendingAppointmentsCount() {
         $query = "SELECT COUNT(*) FROM appointments WHERE status = 'pendiente'";
         try {
             $statement = $this->db->prepare($query);
             $statement->execute();
-            return $statement->fetchColumn();
+            $count = $statement->fetchColumn();
+            return $count !== false ? (int)$count : 0;
         } catch (PDOException $e) {
             error_log("Error al contar las citas pendientes: " . $e->getMessage());
             return 0;
@@ -159,10 +157,10 @@ class AppointmentModel {
     }
 
     /**
-     * Compute available 30-minute appointment time slots for a given date based on active schedule configuration and existing bookings.
+     * Calcula los horarios disponibles para una fecha específica.
      *
-     * @param string $date The date to check in `Y-m-d` format.
-     * @return string[] List of available time strings in `H:i` format (e.g., "14:30"); returns an empty array if no slots are available or on error.
+     * @param string $date La fecha en formato Y-m-d.
+     * @return array
      */
     public function getAvailableSlotsForDate(string $date) {
         try {
