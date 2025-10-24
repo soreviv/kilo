@@ -100,11 +100,11 @@ class AppointmentModel {
     }
 
     /**
-     * Actualiza el estado de una cita.
+     * Update the status of an appointment identified by its ID.
      *
-     * @param int $id
-     * @param string $status
-     * @return bool
+     * @param int $id The appointment ID to update.
+     * @param string $status The new status to assign to the appointment.
+     * @return bool `true` if the update succeeded, `false` otherwise.
      */
     public function updateStatus(int $id, string $status): bool {
         $query = "UPDATE appointments SET status = :status WHERE id = :id";
@@ -118,6 +118,9 @@ class AppointmentModel {
     }
 
     /**
+     * Retrieve all appointments scheduled for the current date, ordered by time.
+     *
+     * @return array An array of associative arrays representing today's appointments; empty array if there are none or an error occurs.
      * Obtiene las citas para una fecha específica.
      *
      * @param string $date La fecha en formato Y-m-d.
@@ -139,9 +142,9 @@ class AppointmentModel {
     }
 
     /**
-     * Obtiene el número de citas pendientes.
+     * Retrieve the count of appointments whose status is 'pendiente'.
      *
-     * @return int
+     * @return int The number of appointments with status 'pendiente'; returns 0 if a database error occurs.
      */
     public function getPendingAppointmentsCount() {
         $query = "SELECT COUNT(*) FROM appointments WHERE status = 'pendiente'";
@@ -156,10 +159,10 @@ class AppointmentModel {
     }
 
     /**
-     * Calcula los horarios disponibles para una fecha específica.
+     * Compute available 30-minute appointment time slots for a given date based on active schedule configuration and existing bookings.
      *
-     * @param string $date La fecha en formato Y-m-d.
-     * @return array
+     * @param string $date The date to check in `Y-m-d` format.
+     * @return string[] List of available time strings in `H:i` format (e.g., "14:30"); returns an empty array if no slots are available or on error.
      */
     public function getAvailableSlotsForDate(string $date) {
         try {

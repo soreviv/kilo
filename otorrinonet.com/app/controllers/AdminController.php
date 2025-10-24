@@ -16,7 +16,11 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Muestra el dashboard principal del panel de administración.
+     * Render and output the admin dashboard view with appointment and message metrics.
+     *
+     * Builds a data array including `pageTitle`, `appointmentsToday`, `pendingAppointmentsCount`,
+     * and `unreadMessagesCount`, then echoes the result of rendering the 'admin/dashboard' view
+     * with that data.
      */
     public function dashboard() {
         $appointmentModel = new \App\Models\AppointmentModel();

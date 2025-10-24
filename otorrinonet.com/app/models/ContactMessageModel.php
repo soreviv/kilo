@@ -62,11 +62,11 @@ class ContactMessageModel {
     }
 
     /**
-     * Actualiza el estado de un mensaje.
+     * Update the status of a contact message by its ID.
      *
-     * @param int $id
-     * @param string $status
-     * @return bool
+     * @param int $id The contact message identifier.
+     * @param string $status The new status value to set (for example, 'nuevo' or 'leido').
+     * @return bool `true` if the update succeeded, `false` otherwise.
      */
     public function updateStatus(int $id, string $status): bool {
         $query = "UPDATE contact_messages SET status = :status WHERE id = :id";
@@ -80,9 +80,9 @@ class ContactMessageModel {
     }
 
     /**
-     * Obtiene el número de mensajes no leídos.
+     * Retrieves the count of contact messages with status 'nuevo'.
      *
-     * @return int
+     * @return int The number of messages with status 'nuevo'; 0 if an error occurs.
      */
     public function getUnreadMessagesCount() {
         $query = "SELECT COUNT(*) FROM contact_messages WHERE status = 'nuevo'";
