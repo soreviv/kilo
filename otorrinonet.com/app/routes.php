@@ -1,28 +1,41 @@
 <?php
 
-// El router ahora puede gestionar controladores.
-// La sintaxis es 'ControladorController@metodo'.
+/**
+ * --------------------------------------------------------------------------
+ * Web Routes
+ * --------------------------------------------------------------------------
+ *
+ * Here is where you can register web routes for your application. These
+ * routes are loaded by the Router class.
+ *
+ * The router can now handle controllers.
+ * The syntax is 'ControllerName@methodName'.
+ */
 
-// Ruta principal ahora gestionada por HomeController.
+// Displays the home page.
 $router->get('/', 'HomeController@index');
 
-// Página de servicios ahora gestionada por ServicesController.
+// Displays the services page.
 $router->get('/servicios', 'ServicesController@index');
 
-// Rutas para agendar cita.
+// Routes for scheduling an appointment.
 $router->get('/agendar-cita', 'AppointmentController@create');
 $router->post('/agendar-cita', 'AppointmentController@store');
 
-// Rutas de páginas legales.
+// Routes for legal pages.
 $router->get('/aviso-privacidad', 'LegalController@privacyPolicy');
 $router->get('/politica-cookies', 'LegalController@cookiePolicy');
 $router->get('/terminos-condiciones', 'LegalController@termsAndConditions');
 
-// Rutas para el formulario de contacto.
+// Routes for the contact form.
 $router->get('/contacto', 'ContactController@create');
 $router->post('/contacto', 'ContactController@store');
 
-// --- Rutas del Panel de Administración ---
+/**
+ * --------------------------------------------------------------------------
+ * Admin Panel Routes
+ * --------------------------------------------------------------------------
+ */
 $router->get('/admin/login', 'AuthController@showLoginForm');
 $router->post('/admin/login', 'AuthController@login');
 $router->get('/admin/logout', 'AuthController@logout');
@@ -32,5 +45,9 @@ $router->post('/admin/appointments/status', 'AdminController@updateAppointmentSt
 $router->get('/admin/messages', 'AdminController@listMessages');
 $router->post('/admin/messages/status', 'AdminController@updateMessageStatus');
 
-// --- Rutas de la API ---
+/**
+ * --------------------------------------------------------------------------
+ * API Routes
+ * --------------------------------------------------------------------------
+ */
 $router->get('/api/available-times', 'ApiController@getAvailableTimes');

@@ -6,18 +6,27 @@ use App\Core\Database;
 use PDO;
 use PDOException;
 
+/**
+ * Handles database operations related to users.
+ */
 class UserModel {
+    /**
+     * @var PDO The database connection object.
+     */
     private $db;
 
+    /**
+     * The constructor gets the database connection instance.
+     */
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
     /**
-     * Busca un usuario por su nombre de usuario.
+     * Finds a user by their username.
      *
-     * @param string $username
-     * @return array|false Los datos del usuario si se encuentra, o false si no.
+     * @param string $username The username to search for.
+     * @return array|false The user's data if found, or false if not.
      */
     public function findByUsername(string $username) {
         $query = "SELECT id, username, password_hash, rol FROM users WHERE username = :username AND activo = TRUE";

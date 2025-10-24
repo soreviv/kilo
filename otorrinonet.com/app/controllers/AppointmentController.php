@@ -4,18 +4,20 @@ namespace App\Controllers;
 
 use App\Models\AppointmentModel;
 
+/**
+ * Handles the creation and storage of appointments.
+ */
 class AppointmentController extends BaseController {
     /**
-     * Muestra el formulario para agendar una cita.
-     * Corresponde a la ruta GET /agendar-cita.
+     * Displays the form for scheduling an appointment.
+     * Corresponds to the GET /agendar-cita route.
+     * @return void
      */
     public function create() {
-        // Obtenemos los mensajes de la sesión para mostrarlos en la vista.
         $status = $_SESSION['status'] ?? null;
         $errors = $_SESSION['errors'] ?? [];
         $old_data = $_SESSION['old_data'] ?? [];
 
-        // Limpiamos los mensajes de la sesión después de obtenerlos.
         unset($_SESSION['status'], $_SESSION['errors'], $_SESSION['old_data']);
 
         $data = [
@@ -29,11 +31,11 @@ class AppointmentController extends BaseController {
     }
 
     /**
-     * Procesa el formulario de agendamiento de cita.
-     * Corresponde a la ruta POST /agendar-cita.
+     * Processes the appointment scheduling form.
+     * Corresponds to the POST /agendar-cita route.
+     * @return void
      */
     public function store() {
-        // 1. Recoger los datos del formulario.
         $data = [
             'nombre' => trim($_POST['nombre'] ?? ''),
             'email' => trim($_POST['email'] ?? ''),
@@ -44,15 +46,12 @@ class AppointmentController extends BaseController {
             'motivo' => trim($_POST['motivo'] ?? '')
         ];
 
-        // 2. Validar los datos.
         $errors = $this->validateAppointmentData($data);
 
-        // 2.1. Validar hCaptcha.
         if (!$this->validateHCaptcha($_POST['h-captcha-response'] ?? '')) {
             $errors['hcaptcha'] = 'Por favor, completa la verificación de seguridad.';
         }
 
-        // Si hay errores, guardamos los errores y los datos antiguos en la sesión y redirigimos.
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
             $_SESSION['old_data'] = $data;
@@ -62,7 +61,6 @@ class AppointmentController extends BaseController {
             exit;
         }
 
-        // 3. Si la validación es exitosa, verificamos la disponibilidad.
         $appointmentModel = new AppointmentModel();
         if (!$appointmentModel->isTimeSlotAvailable($data['fecha_cita'], $data['hora_cita'])) {
             $errors['hora_cita'] = 'Este horario ya no está disponible. Por favor, selecciona otro.';
@@ -74,26 +72,22 @@ class AppointmentController extends BaseController {
             exit;
         }
 
-        // 4. Si el horario está disponible, intentamos guardar la cita.
         if ($appointmentModel->create($data)) {
-            // Si se guarda correctamente, establecemos un mensaje de éxito.
             $_SESSION['status'] = ['type' => 'success', 'message' => '¡Tu cita ha sido agendada con éxito! Nos pondremos en contacto contigo para confirmar.'];
         } else {
-            // Si hay un error al guardar, establecemos un mensaje de error.
             $_SESSION['status'] = ['type' => 'error', 'message' => 'Hubo un error al procesar tu solicitud. Por favor, inténtalo de nuevo.'];
             $_SESSION['old_data'] = $data;
         }
 
-        // 4. Redirigimos de vuelta al formulario.
         header('Location: /agendar-cita');
         exit;
     }
 
     /**
-     * Valida los datos del formulario de cita.
+     * Validates the appointment form data.
      *
-     * @param array $data
-     * @return array
+     * @param array $data The data from the appointment form.
+     * @return array An array of validation errors.
      */
     private function validateAppointmentData(array $data) {
         $errors = [];
@@ -121,10 +115,10 @@ class AppointmentController extends BaseController {
     }
 
     /**
-     * Valida la respuesta de hCaptcha.
+     * Validates the hCaptcha response.
      *
-     * @param string $response
-     * @return bool
+     * @param string $response The hCaptcha response from the form.
+     * @return bool True if the response is valid, false otherwise.
      */
     private function validateHCaptcha(string $response) {
         if (empty($response)) {
@@ -133,8 +127,6 @@ class AppointmentController extends BaseController {
 
         $secret = $_ENV['HCAPTCHA_SECRET_KEY'] ?? '';
         if (empty($secret)) {
-            // Si no hay clave secreta, no se puede validar.
-            // Es mejor fallar de forma segura.
             error_log("hCaptcha secret key is not set.");
             return false;
         }

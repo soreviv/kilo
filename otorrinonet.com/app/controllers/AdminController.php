@@ -5,13 +5,15 @@ namespace App\Controllers;
 use App\Models\AppointmentModel;
 use App\Models\ContactMessageModel;
 
+/**
+ * Handles the administration dashboard and related actions.
+ */
 class AdminController extends BaseController {
     /**
-     * El constructor verifica si el usuario está autenticado
-     * antes de permitir el acceso a cualquier método de este controlador.
+     * The constructor checks if the user is authenticated
+     * before allowing access to any method of this controller.
      */
     public function __construct() {
-        // Si no hay un usuario en la sesión, redirigir a la página de login.
         if (!isset($_SESSION['user'])) {
             header('Location: /admin/login');
             exit;
@@ -19,7 +21,8 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Muestra el dashboard principal del panel de administración.
+     * Displays the main dashboard of the administration panel.
+     * @return void
      */
     public function dashboard() {
         $appointmentModel = new AppointmentModel();
@@ -38,7 +41,8 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Muestra la lista de citas.
+     * Displays the list of appointments.
+     * @return void
      */
     public function listAppointments() {
         $appointmentModel = new AppointmentModel();
@@ -53,7 +57,8 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Muestra la lista de mensajes de contacto.
+     * Displays the list of contact messages.
+     * @return void
      */
     public function listMessages() {
         $contactMessageModel = new ContactMessageModel();
@@ -68,7 +73,8 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Actualiza el estado de una cita.
+     * Updates the status of an appointment.
+     * @return void
      */
     public function updateAppointmentStatus() {
         $id = $_POST['id'] ?? null;
@@ -79,13 +85,13 @@ class AdminController extends BaseController {
             $appointmentModel->updateStatus((int)$id, $status);
         }
 
-        // Redirigir de vuelta a la lista de citas.
         header('Location: /admin/appointments');
         exit;
     }
 
     /**
-     * Actualiza el estado de un mensaje de contacto.
+     * Updates the status of a contact message.
+     * @return void
      */
     public function updateMessageStatus() {
         $id = $_POST['id'] ?? null;
@@ -96,7 +102,6 @@ class AdminController extends BaseController {
             $contactMessageModel->updateStatus((int)$id, $status);
         }
 
-        // Redirigir de vuelta a la lista de mensajes.
         header('Location: /admin/messages');
         exit;
     }

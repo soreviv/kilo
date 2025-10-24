@@ -4,9 +4,13 @@ namespace App\Controllers;
 
 use App\Models\ContactMessageModel;
 
+/**
+ * Handles the contact form.
+ */
 class ContactController extends BaseController {
     /**
-     * Muestra el formulario de contacto.
+     * Displays the contact form.
+     * @return void
      */
     public function create() {
         $status = $_SESSION['status'] ?? null;
@@ -26,7 +30,8 @@ class ContactController extends BaseController {
     }
 
     /**
-     * Procesa el formulario de contacto.
+     * Processes the contact form submission.
+     * @return void
      */
     public function store() {
         $data = [
@@ -64,6 +69,12 @@ class ContactController extends BaseController {
         exit;
     }
 
+    /**
+     * Validates the contact form data.
+     *
+     * @param array $data The data from the contact form.
+     * @return array An array of validation errors.
+     */
     private function validateContactData(array $data) {
         $errors = [];
         if (empty($data['nombre'])) $errors['nombre'] = 'El nombre es obligatorio.';
@@ -73,6 +84,12 @@ class ContactController extends BaseController {
         return $errors;
     }
 
+    /**
+     * Validates the hCaptcha response.
+     *
+     * @param string $response The hCaptcha response from the form.
+     * @return bool True if the response is valid, false otherwise.
+     */
     private function validateHCaptcha(string $response) {
         if (empty($response)) return false;
         $secret = $_ENV['HCAPTCHA_SECRET_KEY'] ?? '';

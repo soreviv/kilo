@@ -5,9 +5,13 @@ namespace App\Controllers;
 use App\Models\AppointmentModel;
 use App\Controllers\BaseController;
 
+/**
+ * Handles API requests for the application.
+ */
 class ApiController extends BaseController {
     /**
-     * Devuelve los horarios disponibles para una fecha dada en formato JSON.
+     * Returns the available time slots for a given date in JSON format.
+     * @return void
      */
     public function getAvailableTimes() {
         header('Content-Type: application/json');
@@ -39,10 +43,10 @@ class ApiController extends BaseController {
     }
 
     /**
-     * Valida si una cadena es una fecha válida en formato Y-m-d.
+     * Validates if a string is a valid date in Y-m-d format.
      *
-     * @param string|null $date
-     * @return bool
+     * @param string|null $date The date string to validate.
+     * @return bool True if the date is valid, false otherwise.
      */
     private function isValidDate($date) {
         if (!$date) return false;

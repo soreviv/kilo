@@ -4,17 +4,23 @@ namespace App\Core;
 
 use Exception;
 
+/**
+ * Handles routing of HTTP requests to controllers and actions.
+ */
 class Router {
+    /**
+     * @var array Stores all registered routes.
+     */
     protected $routes = [
         'GET' => [],
         'POST' => []
     ];
 
     /**
-     * Carga las rutas definidas en un archivo.
+     * Loads the routes from a file.
      *
-     * @param string $file
-     * @return static
+     * @param string $file The path to the file containing the routes.
+     * @return static An instance of the Router class.
      */
     public static function load($file)
     {
@@ -24,10 +30,11 @@ class Router {
     }
 
     /**
-     * Registra una ruta GET.
+     * Registers a GET route.
      *
-     * @param string $uri
-     * @param string $handler Puede ser 'Controlador@metodo' o un archivo de vista.
+     * @param string $uri The URI for the route.
+     * @param string $handler The handler for the route, which can be a 'Controller@method' string or a view file.
+     * @return void
      */
     public function get($uri, $handler)
     {
@@ -35,10 +42,11 @@ class Router {
     }
 
     /**
-     * Registra una ruta POST.
+     * Registers a POST route.
      *
-     * @param string $uri
-     * @param string $handler 'Controlador@metodo'.
+     * @param string $uri The URI for the route.
+     * @param string $handler The handler for the route, in the format 'Controller@method'.
+     * @return void
      */
     public function post($uri, $handler)
     {
@@ -46,24 +54,23 @@ class Router {
     }
 
     /**
-     * Dirige la solicitud a la ruta y controlador correspondientes.
+     * Directs the request to the appropriate route and controller.
      *
-     * @param string $uri
-     * @param string $requestType
+     * @param string $uri The requested URI.
+     * @param string $requestType The HTTP request type (GET or POST).
+     * @return mixed The result of the controller action.
      */
     public function direct($uri, $requestType)
     {
         if (array_key_exists($uri, $this->routes[$requestType])) {
             $handler = $this->routes[$requestType][$uri];
 
-            // Si el handler contiene '@', es una llamada a un controlador.
             if (strpos($handler, '@') !== false) {
                 return $this->callAction(
                     ...explode('@', $handler)
                 );
             }
 
-            // Mantenemos la lógica anterior para vistas directas (temporalmente).
             return $this->loadView($handler);
         }
 
@@ -71,14 +78,15 @@ class Router {
     }
 
     /**
-     * Llama a un método de un controlador.
+     * Calls a method on a controller.
      *
-     * @param string $controller
-     * @param string $action
+     * @param string $controller The name of the controller.
+     * @param string $action The name of the action (method).
+     * @return mixed The result of the controller action.
+     * @throws Exception If the controller or action is not found.
      */
     protected function callAction($controller, $action)
     {
-        // Añade el namespace completo al controlador.
         $controller = "App\\Controllers\\{$controller}";
 
         if (!class_exists($controller)) {
@@ -97,15 +105,17 @@ class Router {
     }
 
     /**
-     * Carga un archivo de vista (lógica heredada, se recomienda no usar).
+     * Loads a view file.
+     * (Note: This is legacy logic and its use is not recommended).
      *
-     * @param string $view
+     * @param string $view The name of the view file.
+     * @return void
+     * @throws Exception If the view file is not found.
      */
     protected function loadView($view)
     {
         $viewPath = __DIR__ . "/../views/{$view}";
         if (file_exists($viewPath)) {
-            // Esta es una forma simplificada. En el futuro, el controlador se encargará de esto.
             require $viewPath;
             return;
         }
@@ -114,15 +124,15 @@ class Router {
     }
 
     /**
-     * Aborta la solicitud y muestra una página de error.
+     * Aborts the request and shows an error page.
      *
-     * @param int $code
+     * @param int $code The HTTP status code to use.
+     * @return void
      */
     protected function abort($code = 404)
     {
         http_response_code($code);
 
-        // Aquí podrías cargar una vista de error.
         echo "Error {$code}: Página no encontrada";
 
         die();
