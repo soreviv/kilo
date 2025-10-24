@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\AppointmentModel;
+use App\Models\ContactMessageModel;
+
 class AdminController extends BaseController {
     /**
      * El constructor verifica si el usuario está autenticado
@@ -16,15 +19,11 @@ class AdminController extends BaseController {
     }
 
     /**
-     * Render and output the admin dashboard view with appointment and message metrics.
-     *
-     * Builds a data array including `pageTitle`, `appointmentsToday`, `pendingAppointmentsCount`,
-     * and `unreadMessagesCount`, then echoes the result of rendering the 'admin/dashboard' view
-     * with that data.
+     * Muestra el dashboard principal del panel de administración.
      */
     public function dashboard() {
-        $appointmentModel = new \App\Models\AppointmentModel();
-        $contactMessageModel = new \App\Models\ContactMessageModel();
+        $appointmentModel = new AppointmentModel();
+        $contactMessageModel = new ContactMessageModel();
 
         $today = date('Y-m-d');
 
@@ -42,7 +41,7 @@ class AdminController extends BaseController {
      * Muestra la lista de citas.
      */
     public function listAppointments() {
-        $appointmentModel = new \App\Models\AppointmentModel();
+        $appointmentModel = new AppointmentModel();
         $appointments = $appointmentModel->getAllAppointments();
 
         $data = [
@@ -57,7 +56,7 @@ class AdminController extends BaseController {
      * Muestra la lista de mensajes de contacto.
      */
     public function listMessages() {
-        $contactMessageModel = new \App\Models\ContactMessageModel();
+        $contactMessageModel = new ContactMessageModel();
         $messages = $contactMessageModel->getAllMessages();
 
         $data = [
@@ -76,7 +75,7 @@ class AdminController extends BaseController {
         $status = $_POST['status'] ?? null;
 
         if ($id && $status) {
-            $appointmentModel = new \App\Models\AppointmentModel();
+            $appointmentModel = new AppointmentModel();
             $appointmentModel->updateStatus((int)$id, $status);
         }
 
@@ -93,7 +92,7 @@ class AdminController extends BaseController {
         $status = $_POST['status'] ?? null;
 
         if ($id && $status) {
-            $contactMessageModel = new \App\Models\ContactMessageModel();
+            $contactMessageModel = new ContactMessageModel();
             $contactMessageModel->updateStatus((int)$id, $status);
         }
 
