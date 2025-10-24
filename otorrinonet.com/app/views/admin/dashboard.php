@@ -24,11 +24,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div class="bg-white shadow-md rounded-lg p-6">
                             <h3 class="text-lg font-semibold text-gray-600">Citas Pendientes</h3>
-                            <p class="text-3xl font-bold text-blue-500 mt-2"><?= htmlspecialchars($pendingAppointmentsCount ?? 0) ?></p>
+                            <p class="text-3xl font-bold text-blue-500 mt-2"><?= (int)($pendingAppointmentsCount ?? 0) ?></p>
                         </div>
                         <div class="bg-white shadow-md rounded-lg p-6">
                             <h3 class="text-lg font-semibold text-gray-600">Mensajes sin Leer</h3>
-                            <p class="text-3xl font-bold text-green-500 mt-2"><?= htmlspecialchars($unreadMessagesCount ?? 0) ?></p>
+                            <p class="text-3xl font-bold text-green-500 mt-2"><?= (int)($unreadMessagesCount ?? 0) ?></p>
                         </div>
                         <div class="bg-white shadow-md rounded-lg p-6">
                             <h3 class="text-lg font-semibold text-gray-600">Citas para Hoy</h3>
@@ -55,21 +55,31 @@
                                             <td colspan="4" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">No hay citas para hoy.</td>
                                         </tr>
                                     <?php else: ?>
+                                        <?php
+                                        $statusColors = [
+                                            'pendiente' => 'bg-yellow-200 text-yellow-900',
+                                            'confirmada' => 'bg-green-200 text-green-900',
+                                            'cancelada' => 'bg-red-200 text-red-900',
+                                            'completada' => 'bg-blue-200 text-blue-900',
+                                            'no_asistio' => 'bg-gray-200 text-gray-900',
+                                        ];
+                                        ?>
                                         <?php foreach ($appointmentsToday as $appointment): ?>
+                                            <?php $badgeClasses = $statusColors[$appointment['status']] ?? 'bg-gray-200 text-gray-900'; ?>
                                             <tr>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap"><?= htmlspecialchars($appointment['hora_cita']) ?></p>
+                                                    <p class="text-gray-900 whitespace-no-wrap"><?= htmlspecialchars(substr($appointment['hora_cita'], 0, 5)) ?></p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap"><?= htmlspecialchars($appointment['nombre']) ?></p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap"><?= htmlspecialchars($appointment['tipo_consulta']) ?></p>
+                                                    <p class="text-gray-900 whitespace-no-wrap"><?= htmlspecialchars(str_replace('_', ' ', $appointment['tipo_consulta'])) ?></p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                        <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                        <span class="relative"><?= htmlspecialchars($appointment['status']) ?></span>
+                                                    <span class="relative inline-block px-3 py-1 font-semibold leading-tight <?= $badgeClasses ?>">
+                                                        <span aria-hidden class="absolute inset-0 opacity-50 rounded-full <?= $badgeClasses ?>"></span>
+                                                        <span class="relative"><?= htmlspecialchars(ucfirst($appointment['status'])) ?></span>
                                                     </span>
                                                 </td>
                                             </tr>
