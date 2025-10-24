@@ -20,8 +20,7 @@ require '_header.php';
         <div class="flex flex-col md:flex-row items-center">
             <!-- Foto del doctor (placeholder) -->
             <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center">
-                <!-- Ruta de imagen corregida -->
-                <img src="assets/images/doctor-placeholder.jpg" alt="Dr. Alejandro Viveros" class="rounded-full w-64 h-64 object-cover border-4 border-blue-200">
+                <img src="https://placehold.co/256x256/E2E8F0/4A5568/png?text=Dr.+Viveros" alt="Fotografía profesional del Dr. Alejandro Viveros, especialista en otorrinolaringología" class="rounded-full w-64 h-64 object-cover border-4 border-blue-200">
             </div>
             <div class="md:w-2/3 md:pl-8">
                 <h3 class="text-2xl font-bold mb-4">Dr. Alejandro Viveros Domínguez</h3>
@@ -39,16 +38,19 @@ require '_header.php';
 <section class="bg-gray-100 py-16">
     <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center mb-12">Nuestros Servicios</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://placehold.co/80x80/DBEAFE/3B82F6/png?text=Consulta" alt="Icono de un estetoscopio representando una consulta médica" class="mx-auto mb-4">
                 <h3 class="text-xl font-bold mb-2">Consulta Otorrinológica</h3>
                 <p>Evaluación completa del oído, nariz y garganta.</p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://placehold.co/80x80/DBEAFE/3B82F6/png?text=Cirugía" alt="Icono de un bisturí representando procedimientos quirúrgicos" class="mx-auto mb-4">
                 <h3 class="text-xl font-bold mb-2">Cirugías Especializadas</h3>
                 <p>Amigdalectomía, septoplastia y más.</p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://placehold.co/80x80/DBEAFE/3B82F6/png?text=Tratamiento" alt="Icono de un frasco de medicina representando tratamientos especializados" class="mx-auto mb-4">
                 <h3 class="text-xl font-bold mb-2">Tratamientos Especializados</h3>
                 <p>Tratamiento para vértigo, tinnitus y terapia de voz.</p>
             </div>

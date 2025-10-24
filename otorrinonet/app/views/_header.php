@@ -17,15 +17,17 @@
     
     <!-- WhatsApp Button CSS -->
     <link rel="stylesheet" href="/assets/css/social-media.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="bg-white shadow">
         <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-blue-800">Dr. Alejandro Viveros Domínguez</h1>
-                <p class="text-gray-600">Especialista en Otorrinolaringología y Cirugía de Cabeza y Cuello</p>
-            </div>
+            <a href="/" aria-label="Página de inicio">
+                <img src="/assets/images/logo.png" alt="Logo de OtorrinoNet, especialista en otorrinolaringología" style="height: 60px;">
+            </a>
             <nav>
                 <ul class="flex space-x-4">
                     <li><a href="/" class="text-blue-600 hover:text-blue-800 font-medium">Inicio</a></li>
