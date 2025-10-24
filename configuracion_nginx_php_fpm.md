@@ -29,8 +29,8 @@ Para garantizar la seguridad y el correcto funcionamiento, es crucial establecer
     Configura los permisos para que los directorios tengan `rwxr-x---` (750) y los archivos `rw-r-----` (640). Esto permite que tu usuario tenga control total, el grupo `www-data` pueda leer y ejecutar (necesario para PHP-FPM y Nginx), y otros usuarios no tengan acceso.
 
     ```bash
-    sudo find /var/www/otorrinonet.com -type d -exec chmod 750 {} \;
-    sudo find /var/www/otorrinonet.com -type f -exec chmod 640 {} \;
+    sudo find /var/www/otorrinonet -type d -exec chmod 750 {} \;
+    sudo find /var/www/otorrinonet -type f -exec chmod 640 {} \;
     ```
 
     **Explicación de los permisos:**
@@ -51,14 +51,14 @@ Crea un nuevo archivo de configuración de Nginx para tu proyecto.
 sudo nano /etc/nginx/sites-available/your_project_name.conf
 ```
 
-Pega la siguiente configuración, ajustando `your_project_name.com` a tu dominio y `your_project_name` al nombre de tu directorio:
+Pega la siguiente configuración, ajustando `your_project_name` a tu dominio y `your_project_name` al nombre de tu directorio:
 
 ```nginx
 server {
     listen 80;
     listen [::]:80;
     server_name otorrinonet.com www.otorrinonet.com;
-    root /var/www/otorrinonet.com/public;
+    root /var/www/otorrinonet/public;
 
     index index.php index.html index.htm;
 
@@ -89,7 +89,7 @@ Guarda y cierra el archivo (Ctrl+X, Y, Enter).
 Crea un enlace simbólico desde `sites-available` a `sites-enabled` para activar la configuración.
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/your_project_name.conf /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/otorrinonet.conf /etc/nginx/sites-enabled/
 ```
 
 **Probar la configuración de Nginx y reiniciar:**
@@ -130,7 +130,7 @@ sudo systemctl restart php8.3-fpm # Ajusta la versión de PHP
 Crea un archivo de prueba `index.php` en tu directorio `public` para verificar que Nginx y PHP-FPM estén funcionando correctamente.
 
 ```bash
-sudo nano /var/www/your_project_name/public/index.php
+sudo nano /var/www/otorrinonet/public/index.php
 ```
 
 Pega el siguiente contenido:
@@ -143,9 +143,10 @@ phpinfo();
 
 Guarda y cierra el archivo.
 
-Ahora, abre tu navegador web y navega a `http://your_project_name.com`. Deberías ver la página de información de PHP. Si la ves, la configuración es correcta.
+Ahora, abre tu navegador web y navega a `http://your_project_name`. Deberías ver la página de información de PHP. Si la ves, la configuración es correcta.
 
 **¡Importante!** Después de verificar, elimina el archivo `index.php` por razones de seguridad.
 
 ```bash
-sudo rm /var/www/your_project_name/public/index.php
+sudo rm /var/www/otorrinonet/public/index.php
+```
