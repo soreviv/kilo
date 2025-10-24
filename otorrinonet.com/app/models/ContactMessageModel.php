@@ -6,18 +6,27 @@ use App\Core\Database;
 use PDO;
 use PDOException;
 
+/**
+ * Handles database operations related to contact messages.
+ */
 class ContactMessageModel {
+    /**
+     * @var PDO The database connection object.
+     */
     private $db;
 
+    /**
+     * The constructor gets the database connection instance.
+     */
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
     /**
-     * Guarda un nuevo mensaje de contacto en la base de datos.
+     * Saves a new contact message to the database.
      *
-     * @param array $data Los datos del mensaje.
-     * @return bool True si se guardó correctamente, false en caso contrario.
+     * @param array $data The message data.
+     * @return bool True if the message was saved successfully, false otherwise.
      */
     public function create(array $data) {
         $fields = [
@@ -45,9 +54,9 @@ class ContactMessageModel {
     }
 
     /**
-     * Obtiene todos los mensajes de contacto, ordenados por fecha de envío.
+     * Gets all contact messages, ordered by submission date.
      *
-     * @return array
+     * @return array An array of all contact messages.
      */
     public function getAllMessages() {
         $query = "SELECT * FROM contact_messages ORDER BY fecha_envio DESC";
@@ -62,11 +71,11 @@ class ContactMessageModel {
     }
 
     /**
-     * Actualiza el estado de un mensaje.
+     * Updates the status of a message.
      *
-     * @param int $id
-     * @param string $status
-     * @return bool
+     * @param int $id The ID of the message.
+     * @param string $status The new status of the message.
+     * @return bool True if the status was updated successfully, false otherwise.
      */
     public function updateStatus(int $id, string $status): bool {
         $query = "UPDATE contact_messages SET status = :status WHERE id = :id";
@@ -80,16 +89,17 @@ class ContactMessageModel {
     }
 
     /**
-     * Obtiene el número de mensajes no leídos.
+     * Gets the number of unread messages.
      *
-     * @return int
+     * @return int The number of unread messages.
      */
     public function getUnreadMessagesCount() {
         $query = "SELECT COUNT(*) FROM contact_messages WHERE status = 'nuevo'";
         try {
             $statement = $this->db->prepare($query);
             $statement->execute();
-            return $statement->fetchColumn();
+            $count = $statement->fetchColumn();
+            return $count !== false ? (int)$count : 0;
         } catch (PDOException $e) {
             error_log("Error al contar los mensajes no leídos: " . $e->getMessage());
             return 0;

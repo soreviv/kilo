@@ -4,9 +4,13 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 
+/**
+ * Handles user authentication, including login and logout.
+ */
 class AuthController extends BaseController {
     /**
-     * Muestra el formulario de inicio de sesión.
+     * Displays the login form.
+     * @return void
      */
     public function showLoginForm() {
         $status = $_SESSION['status'] ?? null;
@@ -21,7 +25,8 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Procesa el formulario de inicio de sesión.
+     * Processes the login form submission.
+     * @return void
      */
     public function login() {
         $username = $_POST['username'] ?? '';
@@ -30,38 +35,32 @@ class AuthController extends BaseController {
         $userModel = new UserModel();
         $user = $userModel->findByUsername($username);
 
-        // password_verify es seguro contra ataques de temporización.
         if ($user && password_verify($password, $user['password_hash'])) {
-            // Regenerar el ID de sesión para prevenir ataques de fijación de sesión.
             session_regenerate_id(true);
 
-            // Guardar datos del usuario en la sesión.
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
                 'rol' => $user['rol']
             ];
 
-            // Redirigir al dashboard.
             header('Location: /admin/dashboard');
             exit;
         }
 
-        // Si las credenciales son incorrectas, redirigir de vuelta con un error.
         $_SESSION['status'] = ['type' => 'error', 'message' => 'Usuario o contraseña incorrectos.'];
         header('Location: /admin/login');
         exit;
     }
 
     /**
-     * Cierra la sesión del usuario.
+     * Logs the user out.
+     * @return void
      */
     public function logout() {
-        // Destruir todos los datos de la sesión.
         $_SESSION = [];
         session_destroy();
 
-        // Redirigir a la página de inicio de sesión.
         header('Location: /admin/login');
         exit;
     }

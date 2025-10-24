@@ -5,11 +5,26 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
+/**
+ * Represents a singleton database connection.
+ */
 class Database
 {
+    /**
+     * @var Database|null The single instance of the Database class.
+     */
     private static $instance = null;
+
+    /**
+     * @var PDO The PDO connection object.
+     */
     private $connection;
 
+    /**
+     * Private constructor to prevent direct creation of object.
+     * Connects to the database using credentials from environment variables.
+     * @throws PDOException If the database connection fails.
+     */
     private function __construct()
     {
         $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
@@ -32,6 +47,11 @@ class Database
         }
     }
 
+    /**
+     * Gets the single instance of the Database class.
+     *
+     * @return Database The single instance of the Database class.
+     */
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -40,6 +60,11 @@ class Database
         return self::$instance;
     }
 
+    /**
+     * Gets the PDO connection object.
+     *
+     * @return PDO The PDO connection object.
+     */
     public function getConnection()
     {
         return $this->connection;

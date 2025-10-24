@@ -6,22 +6,29 @@ use App\Core\Database;
 use PDO;
 use PDOException;
 
+/**
+ * Handles database operations related to appointments.
+ */
 class AppointmentModel {
+    /**
+     * @var PDO The database connection object.
+     */
     private $db;
 
+    /**
+     * The constructor gets the database connection instance.
+     */
     public function __construct() {
-        // Obtenemos la instancia de la conexión a la base de datos.
         $this->db = Database::getInstance()->getConnection();
     }
 
     /**
-     * Guarda una nueva cita en la base de datos.
+     * Saves a new appointment to the database.
      *
-     * @param array $data Los datos de la cita.
-     * @return bool True si se guardó correctamente, false en caso contrario.
+     * @param array $data The appointment data.
+     * @return bool True if the appointment was saved successfully, false otherwise.
      */
     public function create(array $data) {
-        // Campos esperados en el array $data.
         $fields = [
             'nombre' => $data['nombre'],
             'email' => $data['email'],
@@ -32,7 +39,6 @@ class AppointmentModel {
             'motivo' => $data['motivo']
         ];
 
-        // Construimos la consulta SQL.
         $columns = implode(', ', array_keys($fields));
         $placeholders = ':' . implode(', :', array_keys($fields));
         $query = "INSERT INTO appointments ($columns) VALUES ($placeholders)";
@@ -40,26 +46,23 @@ class AppointmentModel {
         try {
             $statement = $this->db->prepare($query);
 
-            // Hacemos el bind de los valores.
             foreach ($fields as $key => $value) {
                 $statement->bindValue(":$key", $value);
             }
 
-            // Ejecutamos la consulta.
             return $statement->execute();
         } catch (PDOException $e) {
-            // En una aplicación real, se registraría el error detallado.
             error_log("Error al crear la cita: " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * Verifica si un horario de cita está disponible.
+     * Checks if a time slot is available.
      *
-     * @param string $fecha
-     * @param string $hora
-     * @return bool
+     * @param string $fecha The date of the appointment.
+     * @param string $hora The time of the appointment.
+     * @return bool True if the time slot is available, false otherwise.
      */
     public function isTimeSlotAvailable(string $fecha, string $hora): bool {
         $query = "SELECT COUNT(*) FROM appointments
@@ -77,15 +80,14 @@ class AppointmentModel {
             return $statement->fetchColumn() == 0;
         } catch (PDOException $e) {
             error_log("Error al verificar disponibilidad: " . $e->getMessage());
-            // Si hay un error, es más seguro asumir que el horario no está disponible.
             return false;
         }
     }
 
     /**
-     * Obtiene todas las citas, ordenadas por fecha y hora.
+     * Gets all appointments, ordered by date and time.
      *
-     * @return array
+     * @return array An array of all appointments.
      */
     public function getAllAppointments() {
         $query = "SELECT * FROM appointments ORDER BY fecha_cita DESC, hora_cita ASC";
@@ -100,11 +102,11 @@ class AppointmentModel {
     }
 
     /**
-     * Actualiza el estado de una cita.
+     * Updates the status of an appointment.
      *
-     * @param int $id
-     * @param string $status
-     * @return bool
+     * @param int $id The ID of the appointment.
+     * @param string $status The new status of the appointment.
+     * @return bool True if the status was updated successfully, false otherwise.
      */
     public function updateStatus(int $id, string $status): bool {
         $query = "UPDATE appointments SET status = :status WHERE id = :id";
@@ -118,10 +120,10 @@ class AppointmentModel {
     }
 
     /**
-     * Obtiene las citas para una fecha específica.
+     * Gets the appointments for a specific date.
      *
-     * @param string $date La fecha en formato Y-m-d.
-     * @return array
+     * @param string $date The date in Y-m-d format.
+     * @return array An array of appointments for the specified date.
      */
     public function getAppointmentsForDate(string $date) {
         $query = "SELECT hora_cita, nombre, tipo_consulta, status
@@ -139,9 +141,9 @@ class AppointmentModel {
     }
 
     /**
-     * Obtiene el número de citas pendientes.
+     * Gets the number of pending appointments.
      *
-     * @return int
+     * @return int The number of pending appointments.
      */
     public function getPendingAppointmentsCount() {
         $query = "SELECT COUNT(*) FROM appointments WHERE status = 'pendiente'";
@@ -157,35 +159,31 @@ class AppointmentModel {
     }
 
     /**
-     * Calcula los horarios disponibles para una fecha específica.
+     * Calculates the available time slots for a specific date.
      *
-     * @param string $date La fecha en formato Y-m-d.
-     * @return array
+     * @param string $date The date in Y-m-d format.
+     * @return array An array of available time slots.
      */
     public function getAvailableSlotsForDate(string $date) {
         try {
-            // 1. Obtener el día de la semana (0=Domingo, 6=Sábado).
             $dayOfWeek = date('w', strtotime($date));
 
-            // 2. Obtener los horarios de atención para ese día de la semana.
             $scheduleQuery = "SELECT hora_inicio, hora_fin FROM schedule_config WHERE dia_semana = :dayOfWeek AND activo = TRUE";
             $scheduleStmt = $this->db->prepare($scheduleQuery);
             $scheduleStmt->execute([':dayOfWeek' => $dayOfWeek]);
             $schedules = $scheduleStmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (empty($schedules)) {
-                return []; // No hay horarios configurados para este día.
+                return [];
             }
 
-            // 3. Obtener las citas ya agendadas para esa fecha.
             $appointmentsQuery = "SELECT hora_cita FROM appointments WHERE fecha_cita = :date AND status != 'cancelada'";
             $appointmentsStmt = $this->db->prepare($appointmentsQuery);
             $appointmentsStmt->execute([':date' => $date]);
             $bookedSlots = $appointmentsStmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-            // 4. Generar todos los posibles horarios y filtrar los ocupados.
             $availableSlots = [];
-            $slotDuration = 30; // Duración de cada cita en minutos
+            $slotDuration = 30;
 
             foreach ($schedules as $schedule) {
                 $start = new \DateTime($schedule['hora_inicio']);

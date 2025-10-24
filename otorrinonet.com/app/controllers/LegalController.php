@@ -2,9 +2,13 @@
 
 namespace App\Controllers;
 
+/**
+ * Handles the display of legal pages such as the privacy policy, cookie policy, and terms and conditions.
+ */
 class LegalController extends BaseController {
     /**
-     * Muestra la página de Aviso de Privacidad.
+     * Displays the Privacy Policy page.
+     * @return void
      */
     public function privacyPolicy() {
         $data = [
@@ -15,7 +19,8 @@ class LegalController extends BaseController {
     }
 
     /**
-     * Muestra la página de Política de Cookies.
+     * Displays the Cookie Policy page.
+     * @return void
      */
     public function cookiePolicy() {
         $data = [
@@ -26,7 +31,8 @@ class LegalController extends BaseController {
     }
 
     /**
-     * Muestra la página de Términos y Condiciones.
+     * Displays the Terms and Conditions page.
+     * @return void
      */
     public function termsAndConditions() {
         $data = [
