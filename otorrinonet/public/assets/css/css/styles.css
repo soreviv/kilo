@@ -21,6 +21,14 @@
 	}
 }
 
+.slide-down-animation {
+    animation: slideDown 0.3s ease-out;
+}
+
+.body-no-scroll {
+    overflow: hidden;
+}
+
 /* Back-to-top button and toast notifications (moved from inline style blocks) */
 .back-to-top {
 	position: fixed;

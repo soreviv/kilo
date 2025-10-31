@@ -18,6 +18,19 @@ use App\Core\Router;
 use Dotenv\Dotenv; // Importar la clase Dotenv
 
 try {
+    // Generar un nonce criptográficamente seguro.
+    $nonce = base64_encode(random_bytes(16));
+    define('CSP_NONCE', $nonce);
+
+    // Configurar la cabecera Content-Security-Policy (CSP) con el nonce.
+    $cspHeader = "script-src 'self' 'nonce-" . CSP_NONCE . "' https://js.hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net; " .
+                 "style-src 'self' 'nonce-" . CSP_NONCE . "' https://cdn.jsdelivr.net; " .
+                 "frame-src 'self' https://*.hcaptcha.com; " .
+                 "connect-src 'self' https://*.hcaptcha.com; " .
+                 "font-src 'self' data:; " .
+                 "object-src 'none';";
+    header("Content-Security-Policy: " . $cspHeader);
+
     // Cargar variables de entorno desde el archivo .env.
     $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
     $dotenv->load();

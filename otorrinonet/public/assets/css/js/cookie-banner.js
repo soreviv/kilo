@@ -93,7 +93,7 @@
         
         if (modal) {
             modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('body-no-scroll');
         }
         
         if (banner) {
@@ -117,7 +117,7 @@
         
         if (modal) {
             modal.classList.add('hidden');
-            document.body.style.overflow = '';
+            document.body.classList.remove('body-no-scroll');
         }
         
         // Si no hay preferencias guardadas, volver a mostrar el banner
@@ -153,7 +153,7 @@
     function hideBanner() {
         const banner = document.getElementById('cookie-banner');
         if (banner) {
-            banner.style.animation = 'slideDown 0.3s ease-out';
+            banner.classList.add('slide-down-animation');
             setTimeout(() => {
                 banner.classList.add('hidden');
             }, 300);

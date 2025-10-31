@@ -89,7 +89,7 @@
     </div>
 </div>
 
-<style>
+<style nonce="<?= defined('CSP_NONCE') ? CSP_NONCE : '' ?>">
 /* Cookie Banner Styles */
 .cookie-banner {
     position: fixed;
