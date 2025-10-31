@@ -270,18 +270,4 @@
 
 })();
 
-// Agregar animación slideDown
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideDown {
-        from {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateY(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+// Note: animation rules moved to external CSS (public/assets/css/css/styles.css) to comply with CSP

@@ -12,6 +12,7 @@
         initFormValidation();
         initWhatsAppButton();
         initBackToTop();
+        initAutoSubmitSelects();
     });
 
     /**
@@ -246,6 +247,18 @@
     }
 
     /**
+     * Inicializar selects que deben enviar el formulario al cambiar
+     */
+    function initAutoSubmitSelects() {
+        const selects = document.querySelectorAll('select.js-autosubmit');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                if (this.form) this.form.submit();
+            });
+        });
+    }
+
+    /**
      * Utilidades generales
      */
     window.OtorrinoNet = {
@@ -298,93 +311,4 @@
 
 })();
 
-// Estilos adicionales para toast y back-to-top
-const style = document.createElement('style');
-style.textContent = `
-    .back-to-top {
-        position: fixed;
-        bottom: 100px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #3b82f6, #1e40af);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 9998;
-    }
-
-    .back-to-top.show {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .back-to-top:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-    }
-
-    .toast {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        background: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        z-index: 10001;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease;
-        max-width: 300px;
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    .toast-success {
-        border-left: 4px solid #10b981;
-        color: #065f46;
-    }
-
-    .toast-error {
-        border-left: 4px solid #ef4444;
-        color: #991b1b;
-    }
-
-    .toast-info {
-        border-left: 4px solid #3b82f6;
-        color: #1e40af;
-    }
-
-    .toast-warning {
-        border-left: 4px solid #f59e0b;
-        color: #92400e;
-    }
-
-    @media (max-width: 768px) {
-        .back-to-top {
-            bottom: 80px;
-            right: 15px;
-            width: 45px;
-            height: 45px;
-        }
-
-        .toast {
-            right: 10px;
-            left: 10px;
-            max-width: none;
-        }
-    }
-`;
-document.head.appendChild(style);
+// Styles moved to external CSS (public/assets/css/css/styles.css) to comply with CSP

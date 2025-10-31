@@ -47,7 +47,7 @@
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <form action="/admin/messages/status" method="POST" class="inline-flex">
                                                 <input type="hidden" name="id" value="<?= $message['id'] ?>">
-                                                <select name="status" onchange="this.form.submit()" class="appearance-none bg-transparent border-none text-gray-900">
+                                                <select name="status" class="appearance-none bg-transparent border-none text-gray-900 js-autosubmit">
                                                     <option value="nuevo" <?= $message['status'] === 'nuevo' ? 'selected' : '' ?>>Nuevo</option>
                                                     <option value="leido" <?= $message['status'] === 'leido' ? 'selected' : '' ?>>Leído</option>
                                                     <option value="respondido" <?= $message['status'] === 'respondido' ? 'selected' : '' ?>>Respondido</option>

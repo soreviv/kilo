@@ -52,7 +52,7 @@
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <form action="/admin/appointments/status" method="POST" class="inline-flex">
                                                 <input type="hidden" name="id" value="<?= $appointment['id'] ?>">
-                                                <select name="status" onchange="this.form.submit()" class="appearance-none bg-transparent border-none text-gray-900">
+                                                <select name="status" class="appearance-none bg-transparent border-none text-gray-900 js-autosubmit">
                                                     <option value="pendiente" <?= $appointment['status'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
                                                     <option value="confirmada" <?= $appointment['status'] === 'confirmada' ? 'selected' : '' ?>>Confirmada</option>
                                                     <option value="completada" <?= $appointment['status'] === 'completada' ? 'selected' : '' ?>>Completada</option>

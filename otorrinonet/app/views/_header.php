@@ -26,7 +26,7 @@
     <header class="bg-white shadow">
         <div class="container mx-auto px-4 py-6 flex justify-between items-center">
             <a href="/" aria-label="Página de inicio">
-                <img src="/assets/images/logo.png" alt="Logo de OtorrinoNet, especialista en otorrinolaringología" style="height: 60px;">
+                <img src="/assets/images/logo.png" alt="Logo de OtorrinoNet, especialista en otorrinolaringología" class="logo-img">
             </a>
             <nav>
                 <ul class="flex space-x-4">
