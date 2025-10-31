@@ -84,7 +84,7 @@ server {
     # Directiva Content-Security-Policy (CSP) para mejorar la seguridad
     # Esta política utiliza un "nonce" para permitir la ejecución de scripts y estilos en línea de forma segura.
     # Se han eliminado las directivas 'unsafe-eval' y 'unsafe-inline' para una mayor seguridad.
-    add_header Content-Security-Policy "script-src 'self' 'nonce-{{NONCE}}' https://js.hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net; style-src 'self' 'nonce-{{NONCE}}' https://cdn.jsdelivr.net; frame-src 'self' https://*.hcaptcha.com; connect-src 'self' https://*.hcaptcha.com; font-src 'self' data:; object-src 'none';";;
+    add_header Content-Security-Policy "script-src 'self' 'nonce-{{NONCE}}' https://js.hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net; style-src 'self' 'nonce-{{NONCE}}' https://cdn.jsdelivr.net; frame-src 'self' https://*.hcaptcha.com; connect-src 'self' https://*.hcaptcha.com; font-src 'self' data:; object-src 'none';";
 }
 ```
 
