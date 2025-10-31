@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle ?? 'Administración') ?></title>
     <link href="/assets/css/output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen bg-gray-200">
@@ -36,6 +37,36 @@
                         </div>
                     </div>
 
+                    <!-- Charts and Recent Messages -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                        <!-- Appointments Chart -->
+                        <div class="lg:col-span-2 bg-white shadow-md rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-gray-600 mb-4">Citas en los Últimos 7 Días</h3>
+                            <canvas id="appointmentsChart"></canvas>
+                        </div>
+
+                        <!-- Recent Messages -->
+                        <div class="bg-white shadow-md rounded-lg p-6">
+                            <h3 class="text-lg font-semibold text-gray-600 mb-4">Mensajes Recientes</h3>
+                            <div class="space-y-4">
+                                <?php if (empty($recentMessages)): ?>
+                                    <p class="text-gray-600">No hay mensajes nuevos.</p>
+                                <?php else: ?>
+                                    <?php foreach ($recentMessages as $message): ?>
+                                        <div class="border-b border-gray-200 pb-2">
+                                            <a href="/admin/messages#message-<?= $message['id'] ?>" class="hover:text-blue-600">
+                                                <p class="font-semibold text-gray-800"><?= htmlspecialchars($message['nombre']) ?></p>
+                                                <p class="text-sm text-gray-600 truncate"><?= htmlspecialchars($message['asunto']) ?></p>
+                                                <p class="text-xs text-gray-400"><?= date('d/m/Y H:i', strtotime($message['fecha_envio'])) ?></p>
+                                            </a>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Appointments for Today -->
                     <div class="mt-8">
                         <h2 class="text-2xl font-semibold text-gray-700">Citas para Hoy</h2>
@@ -47,12 +78,13 @@
                                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Paciente</th>
                                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tipo</th>
                                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Estado</th>
+                                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($appointmentsToday)): ?>
                                         <tr>
-                                            <td colspan="4" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">No hay citas para hoy.</td>
+                                            <td colspan="5" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">No hay citas para hoy.</td>
                                         </tr>
                                     <?php else: ?>
                                         <?php
@@ -82,6 +114,9 @@
                                                         <span class="relative"><?= htmlspecialchars(ucfirst($appointment['status'])) ?></span>
                                                     </span>
                                                 </td>
+                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
+                                                    <a href="/admin/appointments#appointment-<?= $appointment['id'] ?? '' ?>" class="text-indigo-600 hover:text-indigo-900">Ver</a>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
@@ -93,5 +128,50 @@
             </main>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('appointmentsChart').getContext('2d');
+            
+            const appointmentData = <?= json_encode($appointmentCounts ?? []) ?>;
+            const labels = Object.keys(appointmentData).map(date => {
+                const d = new Date(date + 'T00:00:00');
+                return d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+            });
+            const data = Object.values(appointmentData);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nº de Citas',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

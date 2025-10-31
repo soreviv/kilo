@@ -204,4 +204,45 @@ class AppointmentModel {
             return [];
         }
     }
+
+    /**
+     * Gets the count of appointments for the last N days.
+     *
+     * @param int $days The number of days to look back.
+     * @return array An associative array with dates as keys and counts as values.
+     */
+    public function getAppointmentCountsForLastDays(int $days = 7) {
+        $counts = [];
+        $date = new \DateTime();
+        $date->modify('-' . ($days - 1) . ' days');
+
+        for ($i = 0; $i < $days; $i++) {
+            $d = $date->format('Y-m-d');
+            $counts[$d] = 0;
+            $date->modify('+1 day');
+        }
+
+        $startDate = array_key_first($counts);
+        $endDate = array_key_last($counts);
+
+        $query = "SELECT DATE(fecha_cita) as appointment_date, COUNT(*) as count
+                  FROM appointments
+                  WHERE fecha_cita BETWEEN :startDate AND :endDate
+                  GROUP BY DATE(fecha_cita)";
+
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute([':startDate' => $startDate, ':endDate' => $endDate]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($results as $row) {
+                $counts[$row['appointment_date']] = (int)$row['count'];
+            }
+
+            return $counts;
+        } catch (PDOException $e) {
+            error_log("Error al obtener el recuento de citas por día: " . $e->getMessage());
+            return $counts; // Return initialized counts on error
+        }
+    }
 }

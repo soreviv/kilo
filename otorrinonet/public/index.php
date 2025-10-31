@@ -23,7 +23,7 @@ try {
     define('CSP_NONCE', $nonce);
 
     // Configurar la cabecera Content-Security-Policy (CSP) con el nonce.
-    $cspHeader = "script-src 'self' 'nonce-" . CSP_NONCE . "' https://js.hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net; " .
+    $cspHeader = "script-src 'self' 'nonce-" . CSP_NONCE . "' https://js.hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net 'unsafe-eval'; " .
                  "style-src 'self' 'nonce-" . CSP_NONCE . "' https://cdn.jsdelivr.net; " .
                  "frame-src 'self' https://*.hcaptcha.com; " .
                  "connect-src 'self' https://*.hcaptcha.com; " .

@@ -35,6 +35,8 @@ class AdminController extends BaseController {
             'appointmentsToday' => $appointmentModel->getAppointmentsForDate($today),
             'pendingAppointmentsCount' => $appointmentModel->getPendingAppointmentsCount(),
             'unreadMessagesCount' => $contactMessageModel->getUnreadMessagesCount(),
+            'appointmentCounts' => $appointmentModel->getAppointmentCountsForLastDays(7),
+            'recentMessages' => $contactMessageModel->getRecentUnreadMessages(5),
         ];
 
         echo $this->renderView('admin/dashboard', $data);

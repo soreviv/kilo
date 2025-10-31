@@ -105,4 +105,27 @@ class ContactMessageModel {
             return 0;
         }
     }
+
+    /**
+     * Gets the most recent unread messages.
+     *
+     * @param int $limit The maximum number of messages to retrieve.
+     * @return array An array of the most recent unread messages.
+     */
+    public function getRecentUnreadMessages(int $limit = 5) {
+        $query = "SELECT id, nombre, asunto, fecha_envio
+                  FROM contact_messages
+                  WHERE status = 'nuevo'
+                  ORDER BY fecha_envio DESC
+                  LIMIT :limit";
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener mensajes recientes no leídos: " . $e->getMessage());
+            return [];
+        }
+    }
 }
