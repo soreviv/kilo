@@ -15,10 +15,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // Importar clases con su namespace para una mejor legibilidad.
 use App\Core\Router;
+use Dotenv\Dotenv; // Importar la clase Dotenv
 
 try {
     // Cargar variables de entorno desde el archivo .env.
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
     $dotenv->load();
 
     // Cargar las definiciones de rutas de la aplicación.
