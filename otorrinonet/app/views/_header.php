@@ -16,7 +16,7 @@
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     
     <!-- WhatsApp Button CSS -->
-    <link rel="stylesheet" href="/assets/css/social-media.css">
+    <link rel="stylesheet" href="/assets/css/css/social_media.css">
 
     <!-- Favicon -->
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">

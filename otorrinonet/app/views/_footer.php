@@ -39,6 +39,6 @@
     <?php include 'cookie_banner.php'; ?>
     
     <!-- JavaScript -->    
-    <script src="/assets/js/cookie-banner.js"></script>
+    <script src="/assets/css/js/cookie-banner.js"></script>
 </body>
 </html>
