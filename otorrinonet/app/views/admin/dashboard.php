@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="<?= htmlspecialchars(CSP_NONCE ?? '') ?>">
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('appointmentsChart').getContext('2d');
             
